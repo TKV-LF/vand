@@ -1,24 +1,22 @@
 <?php
-$scriptName = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
-define('HTTP_URL', '/' . substr_replace(trim($_SERVER['REQUEST_URI'], '/'), '', 0, strlen($scriptName)));
+// load config
+require 'config.php';
+require SYSTEM . 'Startup.php';
 
-// Define Path Application
-define('SCRIPT', str_replace('\\', '/', rtrim(__DIR__, '/')) . '/');
-define('SYSTEM', SCRIPT . 'System/');
-define('CONTROLLERS', SCRIPT . 'Application/Controllers/');
-define('MODELS', SCRIPT . 'Application/Models/');
-define('UPLOAD', SCRIPT . 'Upload/');
+use Router\Router;
 
-// Config Database
-define('DATABASE', [
-    'Port' => '3307',
-    'Host' => 'localhost',
-    'Driver' => 'PDO',
-    'Name' => 'vand',
-    'User' => 'root',
-    'Pass' => '',
-    'Prefix' => 'sm_'
-]);
+$request = new Http\Request();
+$response = new Http\Response();
 
-// DB_PREFIX
-define('DB_PREFIX', 'sm_');
+$response->setHeader('Access-Control-Allow-Origin: *');
+$response->setHeader("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+$response->setHeader('Content-Type: application/json; charset=UTF-8');
+
+// set request url and method
+$router = new Router($request->getUrl(), $request->getMethod());
+
+require 'Router/Router.php';
+
+$router->run();
+
+$response->render();
