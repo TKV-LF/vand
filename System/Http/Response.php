@@ -95,6 +95,8 @@ class Response
      */
     protected $content;
 
+    protected $code;
+
     /**
      * Response constructor.
      */
@@ -202,8 +204,10 @@ class Response
     {
         if (!$this->isInvalid($code)) {
             $this->setHeader(sprintf('HTTP/1.1 ' . $code . ' %s', $this->getStatusCodeText($code)));
+            $this->setHeader('Status: ' . $code . ' ' . $this->getStatusCodeText($code));
         }
     }
+
 
     /**
      *  Render Output

@@ -46,6 +46,30 @@ class DatabaseAdapter
         return $this->dbConnection->query($sql);
     }
 
+    public function insert($data, $tableName, $attributes)
+    {
+        return $this->dbConnection->insert($data, $tableName, $attributes);
+    }
+
+    /**
+     * @param $data, $tableName, $attributes
+     * @return mixed
+     */
+    public function update($data, $tableName, $attributes, $where)
+    {
+        return $this->dbConnection->update($data, $tableName, $attributes, $where);
+    }
+
+    /**
+     * @param $data, $tableName, $attributes
+     * @return mixed
+     */
+    public function delete($data, $tableName, $attributes)
+    {
+        return $this->dbConnection->delete($data, $tableName, $attributes);
+    }
+
+
     /**
      * @param $value
      * @return mixed
@@ -66,8 +90,41 @@ class DatabaseAdapter
     /**
      * @return mixed
      */
-    public function findOne($table, $where, $choice = "*")
+    public function findAll($tableName, $choice = "*")
     {
-        return $this->dbConnection->findOne($table, $where, $choice);
+        return $this->dbConnection->findAll($tableName, $choice);
     }
+
+    /**
+     * @return mixed
+     * desc : find paginate with default limit 10 and offset 0 
+     */
+    public function findPaginate($tableName, $choice = "*", $limit = 10, $offset = 0)
+    {
+        return $this->dbConnection->findPaginate($tableName, $choice, $limit, $offset);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function findOne($tableName, $where, $choice = "*")
+    {
+        return $this->dbConnection->findOne($tableName, $where, $choice);
+    }
+
+    public function beginTransaction()
+    {
+        return $this->dbConnection->beginTransaction();
+    }
+
+    public function commit()
+    {
+        return $this->dbConnection->commit();
+    }
+
+    public function rollBack()
+    {
+        return $this->dbConnection->rollBack();
+    }
+
 }

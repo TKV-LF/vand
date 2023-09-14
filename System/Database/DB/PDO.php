@@ -100,6 +100,34 @@ final class PDO
         return $this->pdo->prepare($sql);
     }
 
+    public function findAll($tableName, $choice)
+    {
+
+        $query = "SELECT $choice FROM $tableName";
+        $this->statement = self::prepare($query);
+
+        if ($this->statement) {
+            if ($this->statement->execute()) {
+                return $this->statement->fetchAll(\PDO::FETCH_OBJ);
+            }
+        }
+        return false;
+    }
+
+    public function findPaginate($tableName, $choice, $limit, $offset)
+    {
+
+        $query = "SELECT $choice FROM $tableName LIMIT $limit OFFSET $offset";
+        $this->statement = self::prepare($query);
+
+        if ($this->statement) {
+            if ($this->statement->execute()) {
+                return $this->statement->fetchAll(\PDO::FETCH_OBJ);
+            }
+        }
+        return false;
+    }
+
     public function findOne($tableName, $where, $choice = "*")
     {
         $attributes = array_keys($where);
@@ -120,7 +148,68 @@ final class PDO
         return false;
     }
 
+    public function insert($data, $tableName, $attributes)
+    {
+        $params = array_map(fn($attr) => ":$attr", $attributes);
+        $statement = self::prepare("INSERT INTO $tableName (" . implode(',', $attributes) . ") 
+            VALUES(" . implode(',', $params) . ")");
+        foreach ($attributes as $attribute) {
 
+            $statement->bindValue(":$attribute", $data->{$attribute});
+        }
+        if ($statement->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function update($data, $tableName, $attributes, $where)
+    {
+        $params = array_map(fn($attr) => "$attr = :$attr", $attributes);
+        $sql = implode(',', $params);
+        $statement = self::prepare("UPDATE $tableName SET $sql WHERE $where");
+        foreach ($attributes as $attribute) {
+            $statement->bindValue(":$attribute", $data->{$attribute});
+        }
+        if ($statement->execute()) {
+            return true;
+        }
+        return false;
+
+    }
+
+    public function delete($data, $tableName, $attributes)
+    {
+        $params = array_map(fn($attr) => "$attr = :$attr", $attributes);
+        $sql = implode(',', $params);
+        $statement = self::prepare("DELETE FROM $tableName WHERE $sql");
+        foreach ($attributes as $attribute) {
+            $statement->bindValue(":$attribute", $data->{$attribute});
+        }
+        if ($statement->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function beginTransaction()
+    {
+        return $this->pdo->beginTransaction();
+    }
+
+    public function commit()
+    {
+        return $this->pdo->commit();
+    }
+
+    public function rollBack()
+    {
+        return $this->pdo->rollBack();
+    }
+
+    /**
+     *  destruct
+     */
 
     public function __destruct()
     {

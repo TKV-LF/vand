@@ -38,6 +38,16 @@ class Request
         $this->files = $this->clean($_FILES);
     }
 
+    /**
+     *  Get Headers
+     *
+     * @return string
+     */
+    public function getHeaders()
+    {
+        return apache_request_headers();
+    }
+
 
     /**
      *  Get Post
@@ -47,6 +57,17 @@ class Request
     public function getPost()
     {
         return $_POST;
+    }
+
+    /**
+     *  Get PUT
+     *
+     * @return string
+     */
+    public function getPut()
+    {
+        parse_str(file_get_contents('php://input'), $_PUT);
+        return $_PUT;
     }
 
     /**
@@ -144,6 +165,38 @@ class Request
     public function getBody()
     {
         return file_get_contents('php://input');
+    }
+
+    /**
+     *  Get Bearer Token
+     * @return string
+     */
+    public function getBearerToken()
+    {
+        $headers = $this->getHeaders();
+        if (isset($headers['Authorization'])) {
+            $authHeader = $headers['Authorization'];
+            return preg_replace('/Bearer\s/', '', $authHeader);
+        }
+        return null;
+    }
+
+    /**
+     *  Set User
+     * @return string
+     */
+    public function setUser($user)
+    {
+        $this->request['user'] = $user;
+    }
+
+    /**
+     *  Get User
+     * @return string
+     */
+    public function getUser()
+    {
+        return $this->request['user'];
     }
 
     /**

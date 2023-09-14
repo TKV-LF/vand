@@ -21,6 +21,11 @@ class Controller
     public $response;
 
     /**
+     * Middlewares
+     */
+    protected $middlewares = [];
+
+    /**
      *  Construct
      */
     public function __construct()

@@ -19,8 +19,50 @@ class ControllersAuth extends Controller
             // Read All Task
             $response = $model->login($this->request->getPost());
 
+            if (is_string($response)) {
+                $this->response->sendStatus(200);
+                $this->response->setContent([
+                    'code' => '400',
+                    'error' => $response
+                ]);
+                return;
+            }
+
             // Prepare Data
-            $data = ['data' => $response];
+            $data = [
+                'code' => '200',
+                'data' => $response
+            ];
+
+            // Send Response
+            $this->response->sendStatus(200);
+            $this->response->setContent($data);
+        }
+    }
+
+    public function refresh()
+    {
+        if ($this->request->getMethod() == "GET") {
+            // Connect to database
+            $model = $this->model('auth');
+
+            // Read All Task
+            $response = $model->refresh($this->request->get('refresh_token'));
+
+            if (is_string($response)) {
+                $this->response->sendStatus(200);
+                $this->response->setContent([
+                    'code' => '400',
+                    'error' => $response
+                ]);
+                return;
+            }
+
+            // Prepare Data
+            $data = [
+                'code' => '200',
+                'data' => $response
+            ];
 
             // Send Response
             $this->response->sendStatus(200);
