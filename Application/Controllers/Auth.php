@@ -19,7 +19,7 @@ class ControllersAuth extends Controller
             // Read All Task
             $response = $model->login($this->request->getPost());
 
-            if (is_string($response)) {
+            if (!$response || is_string($response)) {
                 $this->response->sendStatus(200);
                 $this->response->setContent([
                     'code' => '400',
@@ -49,7 +49,7 @@ class ControllersAuth extends Controller
             // Read All Task
             $response = $model->refresh($this->request->get('refresh_token'));
 
-            if (is_string($response)) {
+            if (!$response || is_string($response)) {
                 $this->response->sendStatus(200);
                 $this->response->setContent([
                     'code' => '400',

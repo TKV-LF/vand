@@ -90,26 +90,25 @@ class DatabaseAdapter
     /**
      * @return mixed
      */
-    public function findAll($tableName, $choice = "*")
+    public function find($tableName, $choice = "*", $orderBy = "id desc")
     {
-        return $this->dbConnection->findAll($tableName, $choice);
-    }
-
-    /**
-     * @return mixed
-     * desc : find paginate with default limit 10 and offset 0 
-     */
-    public function findPaginate($tableName, $choice = "*", $limit = 10, $offset = 0)
-    {
-        return $this->dbConnection->findPaginate($tableName, $choice, $limit, $offset);
+        return $this->dbConnection->find($tableName, $choice, $orderBy);
     }
 
     /**
      * @return mixed
      */
-    public function findOne($tableName, $where, $choice = "*")
+    public function paginate($tableName, $limit = 10, $offset = 0, $choice = "*", $orderBy = "id desc")
     {
-        return $this->dbConnection->findOne($tableName, $where, $choice);
+        return $this->dbConnection->paginate($tableName, $limit, $offset, $choice, $orderBy);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function findOne($tableName, $where, $choice = "*", $orderBy = "id desc")
+    {
+        return $this->dbConnection->findOne($tableName, $where, $choice, $orderBy);
     }
 
     public function beginTransaction()

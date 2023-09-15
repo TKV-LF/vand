@@ -50,7 +50,7 @@ class ControllersUser extends Controller
             // Read All Task
             $response = $model->createUser($this->request->getPost());
 
-            if (is_string($response)) {
+            if (!$response || is_string($response)) {
                 $this->response->sendStatus(200);
                 $this->response->setContent([
                     'code' => '400',

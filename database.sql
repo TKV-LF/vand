@@ -30,13 +30,14 @@ create table products(
     storeId int not null,
     name varchar(255) not null,
     description varchar(255) not null,
-    image blob not null,
     price decimal(10, 2) not null,
     quantity int not null,
+    userId int not null,
     since datetime not null,
     lastUpdate datetime not null,
     primary key(id),
     foreign key(storeId) references stores(id),
+    foreign key(userId) references users(id),
     index(name)
 );
 

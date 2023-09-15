@@ -1,5 +1,4 @@
 <?php
-
 use MVC\Model;
 
 class ModelsAuth extends Model
@@ -99,7 +98,8 @@ class ModelsAuth extends Model
         ];
     }
 
-    public function getUserByToken($token){
+    public function getUserByToken($token)
+    {
         $access = $this->db->findOne('tokens', ['tokenValue' => $token, 'tokenType' => 'access'], 'userId, expiryDate');
         if (!$access) {
             return "Access token is invalid";

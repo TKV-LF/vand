@@ -145,7 +145,6 @@ class Router
 
         // check match request url
 
-        var_dump($url);
         if (preg_match($patternAsRegex, $url, $paramsValue)) {
             array_shift($paramsValue);
             foreach ($params[0] as $key => $value) {

@@ -95,15 +95,23 @@ final class PDO
         return $this->pdo->lastInsertId();
     }
 
+    /**
+     *  prepare statement
+     */
     public function prepare($sql)
     {
         return $this->pdo->prepare($sql);
     }
 
-    public function findAll($tableName, $choice)
+    /**
+     * @param $tableName, $choice, $orderBy
+     * @return mixed
+     * @desc find all
+     */
+    public function find($tableName, $choice, $orderBy)
     {
 
-        $query = "SELECT $choice FROM $tableName";
+        $query = "SELECT $choice FROM $tableName ORDER BY $orderBy";
         $this->statement = self::prepare($query);
 
         if ($this->statement) {
@@ -114,10 +122,16 @@ final class PDO
         return false;
     }
 
-    public function findPaginate($tableName, $choice, $limit, $offset)
+    /**
+     * @param $tableName, $limit, $offset, $choice, $orderBy
+     * @return mixed
+     * @desc paginate
+     */
+    public function paginate($tableName, $limit, $offset, $choice, $orderBy)
     {
-
-        $query = "SELECT $choice FROM $tableName LIMIT $limit OFFSET $offset";
+        $offset = $offset > 0 ? ($offset - 1) * $limit : 0;
+        $query = "SELECT $choice FROM $tableName ORDER BY $orderBy LIMIT $limit OFFSET $offset";
+        var_dump($query);
         $this->statement = self::prepare($query);
 
         if ($this->statement) {
@@ -128,12 +142,17 @@ final class PDO
         return false;
     }
 
-    public function findOne($tableName, $where, $choice = "*")
+    /**
+     * @param $tableName, $where, $choice, $orderBy
+     * @return mixed
+     * @desc find one
+     */
+    public function findOne($tableName, $where, $choice, $orderBy)
     {
         $attributes = array_keys($where);
         $sql = implode(" AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
 
-        $query = "SELECT $choice FROM $tableName WHERE $sql";
+        $query = "SELECT $choice FROM $tableName WHERE $sql ORDER BY $orderBy";
         $this->statement = self::prepare($query);
 
         if ($this->statement) {
@@ -148,6 +167,11 @@ final class PDO
         return false;
     }
 
+    /**
+     * @param $data, $tableName, $attributes
+     * @return mixed
+     * @desc insert
+     */
     public function insert($data, $tableName, $attributes)
     {
         $params = array_map(fn($attr) => ":$attr", $attributes);
@@ -163,6 +187,11 @@ final class PDO
         return false;
     }
 
+    /**
+     * @param $data, $tableName, $attributes, $where
+     * @return mixed
+     * @desc update
+     */
     public function update($data, $tableName, $attributes, $where)
     {
         $params = array_map(fn($attr) => "$attr = :$attr", $attributes);
@@ -178,6 +207,11 @@ final class PDO
 
     }
 
+    /**
+     * @param $data, $tableName, $attributes
+     * @return mixed
+     * @desc delete
+     */
     public function delete($data, $tableName, $attributes)
     {
         $params = array_map(fn($attr) => "$attr = :$attr", $attributes);
@@ -192,16 +226,25 @@ final class PDO
         return false;
     }
 
+    /**
+     *  begin transaction
+     */
     public function beginTransaction()
     {
         return $this->pdo->beginTransaction();
     }
 
+    /**
+     *  commit transaction
+     */
     public function commit()
     {
         return $this->pdo->commit();
     }
 
+    /**
+     *  rollback transaction
+     */
     public function rollBack()
     {
         return $this->pdo->rollBack();
@@ -210,7 +253,6 @@ final class PDO
     /**
      *  destruct
      */
-
     public function __destruct()
     {
         $this->pdo = null;

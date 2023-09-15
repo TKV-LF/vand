@@ -24,7 +24,7 @@ $router->get('/store', 'store@list');
 
 $router->get('/store/list', 'store@list');
 
-$router->get('/store/paginate?page=:page&limit=:limit', 'store@paginateList');
+$router->get('/store/paginate', 'store@paginateList');
 
 $router->post('/store/create', 'store@create');
 
@@ -35,6 +35,20 @@ $router->put('/store/update/:id', 'store@update');
 $router->delete('/store/delete/:id', 'store@delete');
 
 // Product
+
+$router->get('/product', 'product@list');
+
+$router->get('/product/list', 'product@list');
+
+$router->get('/product/paginate', 'product@paginateList');
+
+$router->post('/product/create', 'product@create');
+
+$router->get('/product/:id', 'product@detail');
+
+$router->put('/product/update/:id', 'product@update');
+
+$router->delete('/product/delete/:id', 'product@delete');
 
 
 

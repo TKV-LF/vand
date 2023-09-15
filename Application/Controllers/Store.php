@@ -32,6 +32,11 @@ class ControllersStore extends Controller
         $this->request->setUser($user);
     }
 
+    public function index()
+    {
+
+    }
+
     public function list()
     {
 
@@ -41,7 +46,7 @@ class ControllersStore extends Controller
         // Read All Task
         $response = $model->getAllStore();
 
-        if (is_string($response)) {
+        if (!$response || is_string($response)) {
             $this->response->sendStatus(200);
             $this->response->setContent([
                 'code' => '400',
@@ -61,14 +66,14 @@ class ControllersStore extends Controller
         $this->response->setContent($data);
     }
 
-    public function paginateList($params)
+    public function paginateList()
     {
         // Connect to database
         $model = $this->model('store');
         // Read All Task
-        $response = $model->getPaginateStore($this->request->get('page'), $this->request->get('limit'));
+        $response = $model->getPaginateStore($this->request->get('limit'), $this->request->get('page'));
 
-        if (is_string($response)) {
+        if (!$response || is_string($response)) {
             $this->response->sendStatus(200);
             $this->response->setContent([
                 'code' => '400',
@@ -98,7 +103,7 @@ class ControllersStore extends Controller
             // Read All Task
             $response = $model->getStore($id);
 
-            if (is_string($response)) {
+            if (!$response || is_string($response)) {
                 $this->response->sendStatus(200);
                 $this->response->setContent([
                     'code' => '400',
@@ -129,7 +134,7 @@ class ControllersStore extends Controller
             // Read All Task
             $response = $model->createStore($this->request->getPost(), $this->request->getUser());
 
-            if (is_string($response)) {
+            if (!$response || is_string($response)) {
                 $this->response->sendStatus(200);
                 $this->response->setContent([
                     'code' => '400',
@@ -160,7 +165,7 @@ class ControllersStore extends Controller
             // Read All Task
             $response = $model->updateStore($this->request->getPut(), $id);
 
-            if (is_string($response)) {
+            if (!$response || is_string($response)) {
                 $this->response->sendStatus(200);
                 $this->response->setContent([
                     'code' => '400',
@@ -192,7 +197,7 @@ class ControllersStore extends Controller
             // Read All Task
             $response = $model->deleteStore($storeId);
 
-            if (is_string($response)) {
+            if (!$response || is_string($response)) {
                 $this->response->sendStatus(200);
                 $this->response->setContent([
                     'code' => '400',

@@ -7,14 +7,17 @@ class ModelsStore extends Model
 
     public function getAllStore()
     {
-        $stores = $this->db->findAll('stores');
+        $stores = $this->db->find('stores');
         return $stores;
     }
 
-    public function getPaginateStore($page, $limit)
+    public function getPaginateStore($limit, $page)
     {
-        $stores = $this->db->findPaginate('stores', $page, $limit);
-        return $stores;
+        $limit = $limit ?? 10;
+        $page = $page ?? 1;
+        $stores = $this->db->paginate('stores', $limit, $page);
+
+        return $stores ? $stores : [];
     }
 
     public function getStore($id)
@@ -105,7 +108,9 @@ class ModelsStore extends Model
         }
         $this->db->commit();
 
-        return true;
+        return [
+            'message' => 'Store {$storeId} is deleted'
+        ];
     }
 
     private function attributes()
