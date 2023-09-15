@@ -8,33 +8,8 @@ class ControllersStore extends Controller
     public function __construct()
     {
         parent::__construct();
-        $token = $this->request->getBearerToken();
-        if (!$token) {
-            $this->response->sendStatus(200);
-            $this->response->setContent([
-                'code' => '400',
-                'error' => 'Token is required'
-            ]);
-            return;
-        }
-
-        $auth = $this->model('auth');
-        $user = $auth->getUserByToken($token);
-        if (!$user) {
-            $this->response->sendStatus(200);
-            $this->response->setContent([
-                'code' => '400',
-                'error' => 'Token is invalid'
-            ]);
-            return;
-        }
-
-        $this->request->setUser($user);
-    }
-
-    public function index()
-    {
-
+        require_once MIDDLEWARES . 'AuthMiddleware.php';
+        $this->registerMiddleware(new AuthMiddleware(['list', 'detail', 'create', 'update', 'delete']));
     }
 
     public function list()

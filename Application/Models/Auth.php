@@ -102,16 +102,16 @@ class ModelsAuth extends Model
     {
         $access = $this->db->findOne('tokens', ['tokenValue' => $token, 'tokenType' => 'access'], 'userId, expiryDate');
         if (!$access) {
-            return "Access token is invalid";
+            return 'Access token is invalid';
         }
 
         if (strtotime($access->expiryDate) < strtotime(date('Y-m-d H:i:s'))) {
-            return "Access token is expired";
+            return 'Access token is expired';
         }
 
         $user = $this->db->findOne('users', ['id' => $access->userId], 'id, email, firstName, lastName, since, lastUpdate');
         if (!$user) {
-            return "User is not exist";
+            return 'User is not exist';
         }
 
         return $user;

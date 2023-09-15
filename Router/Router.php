@@ -1,10 +1,5 @@
 <?php
-$router->get('/home', 'home@index');
-
-
-
 // User
-$router->get('/user', 'user@index');
 
 $router->post('/user/create', 'user@create');
 

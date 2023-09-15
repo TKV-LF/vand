@@ -1,54 +1,37 @@
 <?php
 namespace MVC;
 
-/**
- * Class Controller, a port of MVC
- *
- *
- * @package MVC
- */
-class Controller
+abstract class Middleware
 {
-
     /**
-     * Request Class.
+     * Router controller current action
      */
-    public $request;
+    protected $actions = [];
 
-    /**
-     * Response Class.
-     */
-    public $response;
+    protected $request;
 
-    /**
-     * Middlewares
-     */
-    protected $middlewares = [];
+    protected $response;
 
-    /**
-     *  Construct
-     */
-    public function __construct()
+
+    public function __construct($actions = [])
     {
+        $this->actions = $actions;
         $this->request = $GLOBALS['request'];
         $this->response = $GLOBALS['response'];
     }
 
     /**
-     *  Register middleware
+     * Return all actions
      */
-    protected function registerMiddleware($middleware)
+    public function getActions()
     {
-        $this->middlewares[] = $middleware;
+        return $this->actions;
     }
 
     /**
-     * Return all the registered middlewares
+     * Execute middleware
      */
-    public function getMiddlewares(): array
-    {
-        return $this->middlewares;
-    }
+    abstract public function execute($action);
 
     /**
      * get Model
@@ -74,12 +57,5 @@ class Controller
         } else {
             throw new \Exception(sprintf('{ %s } this model file not found', $file));
         }
-    }
-
-    // send response faster
-    public function send($status = 200, $msg)
-    {
-        $this->response->setHeader(sprintf('HTTP/1.1 ' . $status . ' %s', $this->response->getStatusCodeText($status)));
-        $this->response->setContent($msg);
     }
 }

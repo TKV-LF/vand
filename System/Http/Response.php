@@ -208,6 +208,12 @@ class Response
         }
     }
 
+    public function send()
+    {
+        $this->render();
+        exit();
+    }
+
 
     /**
      *  Render Output

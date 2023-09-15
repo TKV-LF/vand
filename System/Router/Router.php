@@ -239,6 +239,10 @@ class Router
                 $method = 'index';
             }
 
+            foreach ($controller->getMiddlewares() as $middleware) {
+                $middleware->execute($method);
+            }
+
             // call to controller
             if (is_callable([$controller, $method]))
                 return call_user_func([$controller, $method], $params);
