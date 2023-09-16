@@ -2,6 +2,11 @@
 $router->get('/documentation', function () {
     require_once $_SERVER['DOCUMENT_ROOT'] . '/vand-api/Documentation/index.php';
 });
+
+$router->get('/documentation.json', function () {
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/vand-api/Documentation/documentation.php';
+});
+
 // User
 $router->post('/user/create', 'user@create');
 
