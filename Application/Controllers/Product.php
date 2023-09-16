@@ -1,13 +1,5 @@
 <?php
 use MVC\Controller;
-use OpenApi\Annotations as OA;
-
-/**
- * @OA\Info(title="My First API", version="0.1")
- */
-class OpenApi
-{
-}
 
 class ControllersProduct extends Controller
 {
@@ -19,12 +11,6 @@ class ControllersProduct extends Controller
         $this->registerMiddleware(new AuthMiddleware(['list', 'detail', 'create', 'update', 'delete']));
     }
 
-    /**
-     * @OA\Get(
-     *     path="/product",
-     *     @OA\Response(response="200", description="An example resource")
-     * )
-     */
     public function list()
     {
 
@@ -54,12 +40,6 @@ class ControllersProduct extends Controller
         $this->response->setContent($data);
     }
 
-    /**
-     * @OA\Get(
-     *     path="/product/list",
-     *     @OA\Response(response="200", description="An example resource")
-     * )
-     */
     public function paginateList()
     {
         $limit = $this->request->get('limit');
@@ -91,12 +71,6 @@ class ControllersProduct extends Controller
         $this->response->setContent($data);
     }
 
-    /**
-     * @OA\Post(
-     *     path="/product/search",
-     *     @OA\Response(response="200", description="An example resource")
-     * )
-     */
     public function search()
     {
         if ($this->request->getMethod() === "POST") {
@@ -130,12 +104,6 @@ class ControllersProduct extends Controller
         }
     }
 
-    /**
-     * @OA\Get(
-     *     path="/product/{id}",
-     *     @OA\Response(response="200", description="An example resource")
-     * )
-     */
     public function detail($params)
     {
         // Connect to database
@@ -165,12 +133,6 @@ class ControllersProduct extends Controller
         $this->response->setContent($data);
     }
 
-    /**
-     * @OA\Post(
-     *     path="/product/create",
-     *     @OA\Response(response="200", description="An example resource")
-     * )
-     */
     public function create()
     {
         // Connect to database
@@ -199,12 +161,6 @@ class ControllersProduct extends Controller
         $this->response->setContent($data);
     }
 
-    /**
-     * @OA\Put(
-     *     path="/product/update/{id}",
-     *     @OA\Response(response="200", description="An example resource")
-     * )
-     */
     public function update($params)
     {
         if ($this->request->getMethod() === "PUT") {
@@ -235,12 +191,6 @@ class ControllersProduct extends Controller
         }
     }
 
-    /**
-     * @OA\Delete(
-     *     path="/product/delete/{id}",
-     *     @OA\Response(response="200", description="An example resource")
-     * )
-     */
     public function delete($params)
     {
         $model = $this->model('product');

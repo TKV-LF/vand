@@ -1,18 +1,8 @@
 <?php
 use MVC\Model;
-use OpenApi\Annotations as OA;
 
-/**
- * @OA\Info(title="Authenticate", version="0.1")
- */
 class ModelsAuth extends Model
 {
-    /**
-     * @OA\Post(
-     *     path="/auth/login",
-     *     @OA\Response(response="200", description="An example resource")
-     * )
-     */
     public function login($requestBody)
     {
         $email = $requestBody['email'] ?? null;
