@@ -1,13 +1,14 @@
 <?php
+$router->get('/documentation', function () {
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/vand-api/Documentation/index.php';
+});
+
+$router->get('/documentation.json', function () {
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/vand-api/Documentation/documentation.php';
+});
+
 // User
-
 $router->post('/user/create', 'user@create');
-
-// $router->get('/user/:id', 'user@show');
-
-// $router->put('/user/:id', 'user@update');
-
-// $router->delete('/user/:id', 'user@delete');
 
 // Auth
 $router->post('/auth/login', 'auth@login');
@@ -48,9 +49,3 @@ $router->get('/product/:id', 'product@detail');
 $router->put('/product/update/:id', 'product@update');
 
 $router->delete('/product/delete/:id', 'product@delete');
-
-
-
-$router->get('/', function () {
-    echo 'Welcome ';
-});

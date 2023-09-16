@@ -1,0 +1,1075 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Documentation of Vand Test API",
+    "description": "Test version of Vand API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "User Login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "example": {
+                  "accessToken": "your-access-token",
+                  "refreshToken": "your-refresh-token",
+                  "expiryDate": "2023-09-30T00:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "summary": "Refresh Access Token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  }
+                },
+                "required": ["token"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Access token refreshed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "accessToken": "new-access-token",
+                  "refreshToken": "your-refresh-token",
+                  "expiryDate": "2023-09-30T00:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/user": {
+      "get": {
+        "summary": "Get User Info",
+        "responses": {
+          "200": {
+            "description": "User information",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "email": "user@example.com",
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "since": "2023-09-01T00:00:00Z",
+                  "lastUpdate": "2023-09-05T00:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/list": {
+      "get": {
+        "summary": "Get All Products",
+        "responses": {
+          "200": {
+            "description": "List of products",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Product 1",
+                    "description": "Description of Product 1",
+                    "price": 10.99,
+                    "quantity": 100,
+                    "storeId": 1,
+                    "since": "2023-09-01T00:00:00Z",
+                    "lastUpdate": "2023-09-05T00:00:00Z"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Product 2",
+                    "description": "Description of Product 2",
+                    "price": 15.99,
+                    "quantity": 50,
+                    "storeId": 2,
+                    "since": "2023-09-02T00:00:00Z",
+                    "lastUpdate": "2023-09-06T00:00:00Z"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/paginate": {
+      "get": {
+        "summary": "Get All Products with Pagination",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of products with pagination",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Product 1",
+                    "description": "Description of Product 1",
+                    "price": 10.99,
+                    "quantity": 100,
+                    "storeId": 1,
+                    "since": "2023-09-01T00:00:00Z",
+                    "lastUpdate": "2023-09-05T00:00:00Z"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Product 2",
+                    "description": "Description of Product 2",
+                    "price": 15.99,
+                    "quantity": 50,
+                    "storeId": 2,
+                    "since": "2023-09-02T00:00:00Z",
+                    "lastUpdate": "2023-09-06T00:00:00Z"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "summary": "Get Product by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product information",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Product 1",
+                  "description": "Description of Product 1",
+                  "price": 10.99,
+                  "quantity": 100,
+                  "storeId": 1,
+                  "since": "2023-09-01T00:00:00Z",
+                  "lastUpdate": "2023-09-05T00:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Product not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/search": {
+      "post": {
+        "summary": "Search Products with Pagination",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of products matching the search criteria",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Product 1",
+                    "description": "Description of Product 1",
+                    "price": 10.99,
+                    "quantity": 100,
+                    "storeId": 1,
+                    "since": "2023-09-01T00:00:00Z",
+                    "lastUpdate": "2023-09-05T00:00:00Z"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/create": {
+      "post": {
+        "summary": "Create a New Product",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "number"
+                  },
+                  "quantity": {
+                    "type": "integer"
+                  },
+                  "storeId": {
+                    "type": "integer"
+                  }
+                },
+                "required": ["name", "price", "quantity", "storeId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Product created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Product 1",
+                  "description": "Description of Product 1",
+                  "price": 10.99,
+                  "quantity": 100,
+                  "storeId": 1,
+                  "since": "2023-09-01T00:00:00Z",
+                  "lastUpdate": "2023-09-05T00:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/update/{id}": {
+      "put": {
+        "summary": "Update Product by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "number"
+                  },
+                  "quantity": {
+                    "type": "integer"
+                  },
+                  "storeId": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Product updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Updated Product",
+                  "description": "Updated description",
+                  "price": 19.99,
+                  "quantity": 75,
+                  "storeId": 2,
+                  "since": "2023-09-01T00:00:00Z",
+                  "lastUpdate": "2023-09-08T00:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Product not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/delete/{id}": {
+      "delete": {
+        "summary": "Delete Product by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product deleted successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Product 1 is deleted"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Product not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/list": {
+      "get": {
+        "summary": "Get All Stores",
+        "responses": {
+          "200": {
+            "description": "List of stores",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Store 1",
+                    "description": "Description of Store 1",
+                    "since": "2023-09-01T00:00:00Z",
+                    "lastUpdate": "2023-09-05T00:00:00Z"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Store 2",
+                    "description": "Description of Store 2",
+                    "since": "2023-09-02T00:00:00Z",
+                    "lastUpdate": "2023-09-06T00:00:00Z"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/paginate": {
+      "get": {
+        "summary": "Get All Stores with Pagination",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of stores with pagination",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Store 1",
+                    "description": "Description of Store 1",
+                    "since": "2023-09-01T00:00:00Z",
+                    "lastUpdate": "2023-09-05T00:00:00Z"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Store 2",
+                    "description": "Description of Store 2",
+                    "since": "2023-09-02T00:00:00Z",
+                    "lastUpdate": "2023-09-06T00:00:00Z"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/{id}": {
+      "get": {
+        "summary": "Get Store by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Store information",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Store 1",
+                  "description": "Description of Store 1",
+                  "since": "2023-09-01T00:00:00Z",
+                  "lastUpdate": "2023-09-05T00:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Store not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/search": {
+      "post": {
+        "summary": "Search Stores with Pagination",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of stores matching the search criteria",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Store 1",
+                    "description": "Description of Store 1",
+                    "since": "2023-09-01T00:00:00Z",
+                    "lastUpdate": "2023-09-05T00:00:00Z"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Store 2",
+                    "description": "Description of Store 2",
+                    "since": "2023-09-02T00:00:00Z",
+                    "lastUpdate": "2023-09-06T00:00:00Z"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/create": {
+      "post": {
+        "summary": "Create a New Store",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": ["name"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Store created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Store 1",
+                  "description": "Description of Store 1",
+                  "since": "2023-09-01T00:00:00Z",
+                  "lastUpdate": "2023-09-05T00:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/update/{id}": {
+      "put": {
+        "summary": "Update Store by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Store updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Updated Store",
+                  "description": "Updated description",
+                  "since": "2023-09-01T00:00:00Z",
+                  "lastUpdate": "2023-09-08T00:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Store not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/delete/{id}": {
+      "delete": {
+        "summary": "Delete Store by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Store deleted successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Store 1 is deleted"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Store not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
