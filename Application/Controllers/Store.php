@@ -14,7 +14,6 @@ class ControllersStore extends Controller
 
     public function list()
     {
-
         // Connect to database
         $model = $this->model('store');
 
