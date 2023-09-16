@@ -72,6 +72,39 @@ class ControllersProduct extends Controller
         $this->response->setContent($data);
     }
 
+    public function search()
+    {
+        if ($this->request->getMethod() === "POST") {
+            $limit = $this->request->get('limit');
+            $page = $this->request->get('page');
+
+            // Connect to database
+            $model = $this->model('product');
+
+            // Read All Task
+            $response = $model->searchProduct($this->request->getPost(), $limit, $page);
+
+            if (!$response || is_string($response)) {
+                $this->response->sendStatus(200);
+                $this->response->setContent([
+                    'code' => '400',
+                    'error' => $response
+                ]);
+                return;
+            }
+
+            // Prepare Data
+            $data = [
+                'code' => '200',
+                'data' => $response
+            ];
+
+            // Send Response
+            $this->response->sendStatus(200);
+            $this->response->setContent($data);
+        }
+    }
+
     public function detail($params)
     {
         // Connect to database

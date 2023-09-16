@@ -68,6 +68,36 @@ class ControllersStore extends Controller
         $this->response->setContent($data);
     }
 
+    public function search()
+    {
+        if ($this->request->getMethod() == "POST") {
+            // Connect to database
+            $model = $this->model('store');
+
+            // Read All Task
+            $response = $model->searchStore($this->request->getPost(), $this->request->get('limit'), $this->request->get('page'));
+
+            if (!$response || is_string($response)) {
+                $this->response->sendStatus(200);
+                $this->response->setContent([
+                    'code' => '400',
+                    'error' => $response
+                ]);
+                return;
+            }
+
+            // Prepare Data
+            $data = [
+                'code' => '200',
+                'data' => $response
+            ];
+
+            // Send Response
+            $this->response->sendStatus(200);
+            $this->response->setContent($data);
+        }
+    }
+
     public function detail($params)
     {
         if ($this->request->getMethod() == "GET") {

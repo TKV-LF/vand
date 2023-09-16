@@ -90,9 +90,9 @@ class DatabaseAdapter
     /**
      * @return mixed
      */
-    public function find($tableName, $choice = "*", $orderBy = "id desc")
+    public function find($tableName, $where = '', $choice = "*", $orderBy = "id desc")
     {
-        return $this->dbConnection->find($tableName, $choice, $orderBy);
+        return $this->dbConnection->find($tableName, $where, $choice, $orderBy);
     }
 
     /**
@@ -109,6 +109,14 @@ class DatabaseAdapter
     public function findOne($tableName, $where, $choice = "*", $orderBy = "id desc")
     {
         return $this->dbConnection->findOne($tableName, $where, $choice, $orderBy);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function paginateSearch($tableName, $where, $limit = 10, $offset = 0, $choice = "*", $orderBy = "id desc")
+    {
+        return $this->dbConnection->paginateSearch($tableName, $where, $limit, $offset, $choice, $orderBy);
     }
 
     public function beginTransaction()

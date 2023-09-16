@@ -108,10 +108,15 @@ final class PDO
      * @return mixed
      * @desc find all
      */
-    public function find($tableName, $choice, $orderBy)
+    public function find($tableName, $where, $choice, $orderBy)
     {
-
-        $query = "SELECT $choice FROM $tableName ORDER BY $orderBy";
+        if ($where) {
+            $attributes = array_keys($where);
+            $sql = implode(" AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
+            $query = "SELECT $choice FROM $tableName WHERE $sql ORDER BY $orderBy";
+        } else {
+            $query = "SELECT $choice FROM $tableName ORDER BY $orderBy";
+        }
         $this->statement = self::prepare($query);
 
         if ($this->statement) {
@@ -131,7 +136,6 @@ final class PDO
     {
         $offset = $offset > 0 ? ($offset - 1) * $limit : 0;
         $query = "SELECT $choice FROM $tableName ORDER BY $orderBy LIMIT $limit OFFSET $offset";
-        var_dump($query);
         $this->statement = self::prepare($query);
 
         if ($this->statement) {
@@ -224,6 +228,28 @@ final class PDO
             return true;
         }
         return false;
+    }
+
+    /**
+     *  search paginate
+     */
+    public function paginateSearch($tableName, $where, $limit, $offset, $choice, $orderBy)
+    {
+        $offset = $offset > 0 ? ($offset - 1) * $limit : 0;
+        $attributes = array_keys($where);
+        $sql = implode(" AND ", array_map(fn($attr) => "$attr like :$attr", $attributes));
+        $query = "SELECT $choice FROM $tableName WHERE $sql ORDER BY $orderBy LIMIT $limit OFFSET $offset";
+        $this->statement = self::prepare($query);
+
+        if ($this->statement) {
+            foreach ($where as $key => $item) {
+                $this->statement->bindValue(":$key", "%$item%");
+            }
+
+            if ($this->statement->execute()) {
+                return $this->statement->fetchAll(\PDO::FETCH_OBJ);
+            }
+        }
     }
 
     /**

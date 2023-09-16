@@ -29,6 +29,19 @@ class ModelsProduct extends Model
         return $product;
     }
 
+    public function searchProduct($requestBody, $limit, $page)
+    {
+        $name = $requestBody['name'] ?? '';
+
+        $limit = $limit ?? 10;
+        $page = $page ?? 1;
+        $products = $this->db->paginateSearch('products', [
+            'name' => $name
+        ], $limit, $page);
+
+        return $products ? $products : [];
+    }
+
     public function createProduct($requestBody, $user)
     {
         $name = $requestBody['name'] ?? null;

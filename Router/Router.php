@@ -21,6 +21,8 @@ $router->get('/store/list', 'store@list');
 
 $router->get('/store/paginate', 'store@paginateList');
 
+$router->post('/store/search', 'store@search');
+
 $router->post('/store/create', 'store@create');
 
 $router->get('/store/:id', 'store@detail');
@@ -36,6 +38,8 @@ $router->get('/product', 'product@list');
 $router->get('/product/list', 'product@list');
 
 $router->get('/product/paginate', 'product@paginateList');
+
+$router->post('/product/search', 'product@search');
 
 $router->post('/product/create', 'product@create');
 

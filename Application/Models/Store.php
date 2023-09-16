@@ -29,6 +29,19 @@ class ModelsStore extends Model
         return $store;
     }
 
+    public function searchStore($requestBody, $limit, $page)
+    {
+        $name = $requestBody['name'] ?? '';
+
+        $limit = $limit ?? 10;
+        $page = $page ?? 1;
+        $stores = $this->db->paginateSearch('stores', [
+            'name' => $name
+        ], $limit, $page);
+
+        return $stores ? $stores : [];
+    }
+
     public function createStore($requestBody, $user)
     {
         $name = $requestBody['name'] ?? null;
