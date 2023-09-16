@@ -1,15 +1,23 @@
 <?php
-
 use MVC\Controller;
+use OpenApi\Annotations as OA;
+
+/**
+ * @OA\Info(title="My First API", version="0.1")
+ */
+class OpenApi
+{
+}
 
 class ControllersAuth extends Controller
 {
 
-    public function index()
-    {
-        echo "Auth";
-    }
-
+    /**
+     * @OA\Post(
+     *     path="/auth/login",
+     *     @OA\Response(response="200", description="An example resource")
+     * )
+     */
     public function login()
     {
         if ($this->request->getMethod() == "POST") {
@@ -40,6 +48,12 @@ class ControllersAuth extends Controller
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/auth/refresh",
+     *     @OA\Response(response="200", description="An example resource")
+     * )
+     */
     public function refresh()
     {
         if ($this->request->getMethod() == "GET") {
