@@ -113,7 +113,10 @@ class ModelsAuth extends Model
             return 'User is not exist';
         }
 
-        return $user;
+        return (object) [
+            'user' => $user,
+            'expiryDate' => $access->expiryDate,
+        ];
     }
 
     private function generateToken()
