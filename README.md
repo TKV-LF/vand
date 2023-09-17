@@ -1,8 +1,7 @@
 # Note
--- Note: Data for Testing
--- This SQL script (vand.sql) contains sample data intended for testing purposes
--- You can access the API documentation at http://[your-domain-local]/documentation.
--- If you have any questions or require assistance with running these tests, please feel free to reach out to me at [thuyngtrong@gmail.com].
+- This SQL script (vand.sql) contains sample data intended for testing purposes
+- You can access the API documentation at http://[your-domain-local]/documentation.
+- If you have any questions or require assistance with running these tests, please feel free to reach out to me at [thuyngtrong@gmail.com].
 
 # Database Structure
 
