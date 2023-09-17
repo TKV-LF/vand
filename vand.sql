@@ -41,18 +41,6 @@ create table products(
     index(name)
 );
 
-create table sessions(
-    id int not null auto_increment,
-    userId int not null,
-    token varchar(255) not null,
-    expires datetime not null,
-    since datetime not null,
-    lastUpdate datetime not null,
-    primary key(id),
-    foreign key(userId) references users(id),
-    index(token)
-);
-
 CREATE TABLE tokens (
     id INT AUTO_INCREMENT PRIMARY KEY,
     userID INT NOT NULL,

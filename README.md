@@ -31,6 +31,7 @@ This database, named `vand`, is designed to manage user authentication, stores, 
 - `since`: The date and time when the store was created.
 - `lastUpdate`: The date and time of the last update to the store's information.
 - **Primary Key**: `id`
+- **Foreign Key**: `userId` references `users(Id)`
 - **Index**: `name`
 
 ## Table: `products`
@@ -46,6 +47,8 @@ This database, named `vand`, is designed to manage user authentication, stores, 
 - `since`: The date and time when the product was added.
 - `lastUpdate`: The date and time of the last update to the product's information.
 - **Primary Key**: `id`
+- **Foreign Key**: `userId` references `users(Id)`
+- **Foreign Key**: `storeId` references `stores(Id)`
 - **Index**: `name`
 
 ## Table: `tokens`
