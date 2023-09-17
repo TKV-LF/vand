@@ -10,6 +10,8 @@ $router->get('/documentation.json', function () {
 // User
 $router->post('/user/create', 'user@create');
 
+$router->get('/user/detail', 'user@detail');
+
 // Auth
 $router->post('/auth/login', 'auth@login');
 

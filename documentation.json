@@ -5,9 +5,34 @@
     "description": "Test version of Vand API",
     "version": "1.0.0"
   },
+  "servers": [
+    {
+      "url": "http://vanp-api.test",
+      "description": "Local server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authentication"
+    },
+    {
+      "name": "User",
+      "description": "User management"
+    },
+    {
+      "name": "Store",
+      "description": "Store management"
+    },
+    {
+      "name": "Product",
+      "description": "Product management"
+    }
+  ],
   "paths": {
     "/auth/login": {
       "post": {
+        "tags": ["Auth"],
         "summary": "User Login",
         "requestBody": {
           "required": true,
@@ -56,6 +81,7 @@
     },
     "/auth/refresh": {
       "post": {
+        "tags": ["Auth"],
         "summary": "Refresh Access Token",
         "requestBody": {
           "required": true,
@@ -99,8 +125,67 @@
         }
       }
     },
-    "/auth/user": {
+    "/user/create": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Create a New User",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  }
+                },
+                "required": ["email", "password", "firstName", "lastName"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "email": "user@example.com",
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "since": "2023-09-01T00:00:00Z",
+                  "lastUpdate": "2023-09-05T00:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "error": "Error message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/detail": {
       "get": {
+        "tags": ["User"],
         "summary": "Get User Info",
         "responses": {
           "200": {
@@ -141,8 +226,444 @@
         }
       }
     },
+    "/stores/list": {
+      "get": {
+        "tags": ["Store"],
+        "summary": "Get All Stores",
+        "responses": {
+          "200": {
+            "description": "List of stores",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Store 1",
+                    "description": "Description of Store 1",
+                    "since": "2023-09-01T00:00:00Z",
+                    "lastUpdate": "2023-09-05T00:00:00Z"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Store 2",
+                    "description": "Description of Store 2",
+                    "since": "2023-09-02T00:00:00Z",
+                    "lastUpdate": "2023-09-06T00:00:00Z"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/paginate": {
+      "get": {
+        "tags": ["Store"],
+        "summary": "Get All Stores with Pagination",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of stores with pagination",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Store 1",
+                    "description": "Description of Store 1",
+                    "since": "2023-09-01T00:00:00Z",
+                    "lastUpdate": "2023-09-05T00:00:00Z"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Store 2",
+                    "description": "Description of Store 2",
+                    "since": "2023-09-02T00:00:00Z",
+                    "lastUpdate": "2023-09-06T00:00:00Z"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/{id}": {
+      "get": {
+        "tags": ["Store"],
+        "summary": "Get Store by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Store information",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Store 1",
+                  "description": "Description of Store 1",
+                  "since": "2023-09-01T00:00:00Z",
+                  "lastUpdate": "2023-09-05T00:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Store not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/search": {
+      "post": {
+        "tags": ["Store"],
+        "summary": "Search Stores with Pagination",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "List of stores matching the search criteria",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Store 1",
+                    "description": "Description of Store 1",
+                    "since": "2023-09-01T00:00:00Z",
+                    "lastUpdate": "2023-09-05T00:00:00Z"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Store 2",
+                    "description": "Description of Store 2",
+                    "since": "2023-09-02T00:00:00Z",
+                    "lastUpdate": "2023-09-06T00:00:00Z"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/create": {
+      "post": {
+        "tags": ["Store"],
+        "summary": "Create a New Store",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": ["name"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Store created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Store 1",
+                  "description": "Description of Store 1",
+                  "since": "2023-09-01T00:00:00Z",
+                  "lastUpdate": "2023-09-05T00:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/update/{id}": {
+      "put": {
+        "tags": ["Store"],
+        "summary": "Update Store by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Store updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Updated Store",
+                  "description": "Updated description",
+                  "since": "2023-09-01T00:00:00Z",
+                  "lastUpdate": "2023-09-08T00:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Store not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stores/delete/{id}": {
+      "delete": {
+        "tags": ["Store"],
+        "summary": "Delete Store by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Store deleted successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Store 1 is deleted"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Error message"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Store not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/products/list": {
       "get": {
+        "tags": ["Product"],
         "summary": "Get All Products",
         "responses": {
           "200": {
@@ -199,6 +720,7 @@
     },
     "/products/paginate": {
       "get": {
+        "tags": ["Product"],
         "summary": "Get All Products with Pagination",
         "parameters": [
           {
@@ -273,6 +795,7 @@
     },
     "/products/{id}": {
       "get": {
+        "tags": ["Product"],
         "summary": "Get Product by ID",
         "parameters": [
           {
@@ -337,6 +860,7 @@
     },
     "/products/search": {
       "post": {
+        "tags": ["Product"],
         "summary": "Search Products with Pagination",
         "parameters": [
           {
@@ -416,6 +940,7 @@
     },
     "/products/create": {
       "post": {
+        "tags": ["Product"],
         "summary": "Create a New Product",
         "requestBody": {
           "required": true,
@@ -488,6 +1013,7 @@
     },
     "/products/update/{id}": {
       "put": {
+        "tags": ["Product"],
         "summary": "Update Product by ID",
         "parameters": [
           {
@@ -579,6 +1105,7 @@
     },
     "/products/delete/{id}": {
       "delete": {
+        "tags": ["Product"],
         "summary": "Delete Product by ID",
         "parameters": [
           {
@@ -627,434 +1154,6 @@
               "application/json": {
                 "example": {
                   "error": "Product not found"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/stores/list": {
-      "get": {
-        "summary": "Get All Stores",
-        "responses": {
-          "200": {
-            "description": "List of stores",
-            "content": {
-              "application/json": {
-                "example": [
-                  {
-                    "id": 1,
-                    "name": "Store 1",
-                    "description": "Description of Store 1",
-                    "since": "2023-09-01T00:00:00Z",
-                    "lastUpdate": "2023-09-05T00:00:00Z"
-                  },
-                  {
-                    "id": 2,
-                    "name": "Store 2",
-                    "description": "Description of Store 2",
-                    "since": "2023-09-02T00:00:00Z",
-                    "lastUpdate": "2023-09-06T00:00:00Z"
-                  }
-                ]
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Error message"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Unauthorized"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/stores/paginate": {
-      "get": {
-        "summary": "Get All Stores with Pagination",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of stores with pagination",
-            "content": {
-              "application/json": {
-                "example": [
-                  {
-                    "id": 1,
-                    "name": "Store 1",
-                    "description": "Description of Store 1",
-                    "since": "2023-09-01T00:00:00Z",
-                    "lastUpdate": "2023-09-05T00:00:00Z"
-                  },
-                  {
-                    "id": 2,
-                    "name": "Store 2",
-                    "description": "Description of Store 2",
-                    "since": "2023-09-02T00:00:00Z",
-                    "lastUpdate": "2023-09-06T00:00:00Z"
-                  }
-                ]
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Error message"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Unauthorized"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/stores/{id}": {
-      "get": {
-        "summary": "Get Store by ID",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Store information",
-            "content": {
-              "application/json": {
-                "example": {
-                  "id": 1,
-                  "name": "Store 1",
-                  "description": "Description of Store 1",
-                  "since": "2023-09-01T00:00:00Z",
-                  "lastUpdate": "2023-09-05T00:00:00Z"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Error message"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Unauthorized"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Store not found"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/stores/search": {
-      "post": {
-        "summary": "Search Stores with Pagination",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "List of stores matching the search criteria",
-            "content": {
-              "application/json": {
-                "example": [
-                  {
-                    "id": 1,
-                    "name": "Store 1",
-                    "description": "Description of Store 1",
-                    "since": "2023-09-01T00:00:00Z",
-                    "lastUpdate": "2023-09-05T00:00:00Z"
-                  },
-                  {
-                    "id": 2,
-                    "name": "Store 2",
-                    "description": "Description of Store 2",
-                    "since": "2023-09-02T00:00:00Z",
-                    "lastUpdate": "2023-09-06T00:00:00Z"
-                  }
-                ]
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Error message"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Unauthorized"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/stores/create": {
-      "post": {
-        "summary": "Create a New Store",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  }
-                },
-                "required": ["name"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Store created successfully",
-            "content": {
-              "application/json": {
-                "example": {
-                  "id": 1,
-                  "name": "Store 1",
-                  "description": "Description of Store 1",
-                  "since": "2023-09-01T00:00:00Z",
-                  "lastUpdate": "2023-09-05T00:00:00Z"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Error message"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/stores/update/{id}": {
-      "put": {
-        "summary": "Update Store by ID",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Store updated successfully",
-            "content": {
-              "application/json": {
-                "example": {
-                  "id": 1,
-                  "name": "Updated Store",
-                  "description": "Updated description",
-                  "since": "2023-09-01T00:00:00Z",
-                  "lastUpdate": "2023-09-08T00:00:00Z"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Error message"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Store not found"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/stores/delete/{id}": {
-      "delete": {
-        "summary": "Delete Store by ID",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Store deleted successfully",
-            "content": {
-              "application/json": {
-                "example": {
-                  "message": "Store 1 is deleted"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Error message"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "example": {
-                  "error": "Store not found"
                 }
               }
             }
